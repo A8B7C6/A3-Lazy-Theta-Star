@@ -2,35 +2,33 @@
 
 if (!hasInterface) exitWith {};
 
-private _mapSize = (configFile >> "CfgWorlds" >> worldName >> "MapSize") call BIS_fnc_getCfgData;
-private _gridsPerEdge = floor(_mapSize / GRID_SIZE) + 2;
+private _mapSize = worldSize;
+private _gridsPerEdge = ceil(_mapSize / GRID_SIZE);
 private _numGrids = _gridsPerEdge * _gridsPerEdge;
 
-hintSilent "GWI checkpoint 0";
-sleep(1);
+hintSilent format["GPE: %1, NG: %2", _gridsPerEdge, _numGrids];
+//sleep(1);
 "lazyThetaStar" callExtension format["init:%1:%2:%3", GRID_SIZE, _gridsPerEdge, _numGrids];
-sleep(1);
-hintSilent "GWI checkpoint 1";
 
-private _stepSize = 5;
-for "_i" from 0 to _gridsPerEdge do {
-	private _xi = GRID_SIZE * "_i";
-	for "_j" from 0 to _gridsPerEdge do {
-		private _yj = GRID_SIZE * "_j";
+private _stepSize = 25; //_stepSize should be a factor of GRID_SIZE
+for "_i" from 0 to _gridsPerEdge - 1 do {
+	private _xi = GRID_SIZE * _i;
+	for "_j" from 0 to _gridsPerEdge - 1 do {
+		private _yj = GRID_SIZE * _j;
 		private _hasObstacle = 0;
 
-		if((_i == 0) || (_i == _gridsPerEdge)) then {
+		if((_i == 0) || (_i == _gridsPerEdge - 1)) then {
 			_hasObstacle = 1;
 			"LazyThetaStar" callExtension format["set:%1", _hasObstacle];
 			continue;
 		};
-		if((_j == 0) || (_j == _gridsPerEdge)) then {
+		if((_j == 0) || (_j == _gridsPerEdge - 1)) then {
 			_hasObstacle = 1;
 			"LazyThetaStar" callExtension format["set:%1", _hasObstacle];
 			continue;
 		};
 		
-		for "_k" from 0 to _gridSize step _stepSize do {
+		for "_k" from 0 to (GRID_SIZE - _stepSize) step _stepSize do {
 			if(getTerrainHeightASL[_xi + _k, _yj] >= GVAR(HeightLimit)) then {
 				_hasObstacle = 1;
 				break;
@@ -48,11 +46,11 @@ for "_i" from 0 to _gridsPerEdge do {
 				break;
 			};
 		};
-		
-		sleep(1);
-		hintSilent "GWI checkpoint 2";
+
 		"lazyThetaStar" callExtension format["set:%1", _hasObstacle];
 	};
 };
 
+//sleep(1);
 hintSilent "Terrain data collection done";
+//sleep(1);

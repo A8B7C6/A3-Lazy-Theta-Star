@@ -11,6 +11,7 @@ GVAR(SetStartAndGoalCancelled) = false;
 GVAR(SetPositionsUI) = false;
 
 GVAR(ChartedPath) = [];
+GVAR(MarkersCount) = 0;
 
 if (!hasInterface) exitWith {};
 
