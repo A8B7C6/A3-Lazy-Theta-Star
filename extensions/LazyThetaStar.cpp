@@ -17,7 +17,6 @@ const float WEIGHT{ 100.0f };
 
 LTSAlgo::PathingAlgo pathAlgo;
 
-
 /* HELPER FUNCTIONS */
 //Implement pathfinding algorithm helper stuff here
 
@@ -75,7 +74,7 @@ void __stdcall RVExtension(char *output, int outputSize, const char *function) {
     bool firstPairPassed{ false };
     ss << "[";
     for (auto& posPair : path) {
-        if (!firstPairPassed) { ss << ","; }
+        if (firstPairPassed) { ss << ","; }
         firstPairPassed = true;
 
         posPair.first *= pathAlgo.gridSize;

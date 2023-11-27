@@ -1,13 +1,16 @@
 #include "pch.h"
 #include "LTSAlgo.hpp"
 
-/*Implementation of struct GridMap*/
-
-
 /*Implementation of struct PathingAlgo*/
-LTSAlgo::PathingAlgo::PathingAlgo() {
+/*void LTSAlgo::initPathingAlgo(PathingAlgo pathAlgo) {
+    pathAlgo.gridSize = -1;
+    pathAlgo.gridsPerEdge = -1;
+    pathAlgo.numGrids = -1;
+    LTSAlgo::id start = 0;
+    LTSAlgo::id goal = 0;
 
-}
+    return pathAlgo;
+}*/
 
 LTSAlgo::cost LTSAlgo::PathingAlgo::calcDistance(const id& u, const id& v) const {
     std::valarray<int> uvDist{ nameToPos(u) - nameToPos(v) };
@@ -152,12 +155,12 @@ std::vector<std::pair<int, int>> LTSAlgo::findPath(const id start, const id goal
     if (vertices[goal].gVal < MAX_COST) {
         id curr{ goal };
             
-        while (curr != start) {
-            path.push_back({ curr % gridsPerEdge, curr / gridsPerEdge });
+        while (true) {
+            path.push_back({ curr / gridsPerEdge, curr % gridsPerEdge });
             curr = vertices[curr].parent;
+            if (curr == start) break;
         }
 
-        path.push_back({ curr % gridsPerEdge, curr / gridsPerEdge });
         std::reverse(path.begin(), path.end());
     }
     return path;

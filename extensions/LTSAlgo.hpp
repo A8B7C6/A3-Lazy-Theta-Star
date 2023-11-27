@@ -10,19 +10,15 @@ public:
     typedef uint32_t id;
     typedef float cost;
 
-    struct GridMap {
+    struct PathingAlgo {
         friend LTSAlgo;
         //std::vector<int> mapHeights;
         std::vector<bool> hasObstacle;
-        int gridSize;
-        int gridsPerEdge;
-        int numGrids;
-
-        id start;
-        id goal;
-    };
-
-    struct PathingAlgo : public GridMap {
+        int gridSize { -1 };
+        int gridsPerEdge { -1 };
+        int numGrids { -1 };
+        id start { 0 };
+        id goal { 0 };
 
         cost calcDistance(const id& u, const id& v) const;
 
@@ -34,9 +30,9 @@ public:
 
         std::valarray<int> nameToPos(const id& name) const;
 
-        PathingAlgo();
-
     };
+
+    //void initPathingAlgo(PathingAlgo pathAlgo);
 
     LTSAlgo(PathingAlgo& pathAlgo, float heuristicWeight);
 
